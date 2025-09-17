@@ -1,0 +1,307 @@
+{
+	"info": {
+		"_postman_id": "c1beba5f-540c-4f19-b0d8-8095b9d208ae",
+		"name": "留言与回复模块",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "46720833",
+		"_collection_link": "https://bambi-4084554.postman.co/workspace/Bambi's-Workspace~b4af6a6a-9375-4e60-8efa-291c8be1e1aa/collection/46720833-c1beba5f-540c-4f19-b0d8-8095b9d208ae?action=share&source=collection_link&creator=46720833"
+	},
+	"item": [
+		{
+			"name": "留言模块",
+			"item": [
+				{
+					"name": "查询所有留言",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// 解析响应体\r",
+									"const response = pm.response.json();\r",
+									"\r",
+									"// 1. 断言data存在且为对象\r",
+									"pm.test(\"data为有效对象\", function() {\r",
+									"    pm.expect(response.data).to.be.an(\"object\").and.not.be.null;\r",
+									"});\r",
+									"\r",
+									"// 2. 断言data.records为数组\r",
+									"pm.test(\"data.records是数组\", function() {\r",
+									"    pm.expect(response.data.records).to.be.an(\"array\");\r",
+									"});\r",
+									"\r",
+									"// 3. 验证data包含指定关键字段及其值/类型\r",
+									"pm.test(\"data包含所有必填关键字段\", function() {\r",
+									"    // 验证total为10\r",
+									"    pm.expect(response.data).to.have.property(\"total\", 10);\r",
+									"    \r",
+									"    // 验证size存在（不固定值，仅确认存在）\r",
+									"    pm.expect(response.data).to.have.property(\"size\");\r",
+									"    \r",
+									"    // 验证current存在\r",
+									"    pm.expect(response.data).to.have.property(\"current\");\r",
+									"    \r",
+									"    // 验证searchCount存在（布尔类型）\r",
+									"    pm.expect(response.data).to.have.property(\"searchCount\").that.is.a(\"boolean\");\r",
+									"    \r",
+									"    // 验证pages存在\r",
+									"    pm.expect(response.data).to.have.property(\"pages\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/messages/1/10",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"messages",
+								"1",
+								"10"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "根据id查询留言",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// 解析响应体\r",
+									"const response = pm.response.json();\r",
+									"\r",
+									"// 1. 断言code为200\r",
+									"pm.test(\"响应状态码为200\", function () {\r",
+									"    pm.expect(response.code).to.eql(200);\r",
+									"});\r",
+									"\r",
+									"// 2. 断言data存在且为对象\r",
+									"pm.test(\"data为有效对象\", function () {\r",
+									"    pm.expect(response.data).to.be.an(\"object\").and.not.be.null;\r",
+									"});\r",
+									"\r",
+									"// 3. 断言data内核心关键字不为空（根据业务关键字段调整）\r",
+									"const requiredFields = [\"id\", \"title\", \"content\", \"time\", \"replays\"];\r",
+									"requiredFields.forEach(field => {\r",
+									"    pm.test(`data内的${field}不为空`, function () {\r",
+									"        pm.expect(response.data[field]).to.exist.and.not.be.null;\r",
+									"        // 对字符串类型字段额外验证非空字符串\r",
+									"        if (typeof response.data[field] === \"string\") {\r",
+									"            pm.expect(response.data[field].trim()).not.to.be.empty;\r",
+									"        }\r",
+									"    });\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/message/2",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"message",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "添加留言",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const response = pm.response.json();\r",
+									"\r",
+									"// 断言code为200\r",
+									"pm.test(\"code值为200\", () => {\r",
+									"    pm.expect(response.code).to.eql(200);\r",
+									"});\r",
+									"\r",
+									"// 断言message为\"添加成功\"\r",
+									"pm.test(\"message为添加成功\", () => {\r",
+									"    pm.expect(response.message).to.eql(\"添加成功\");\r",
+									"});\r",
+									"\r",
+									"// 断言data为1\r",
+									"pm.test(\"data值为1\", () => {\r",
+									"    pm.expect(response.data).to.eql(1);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "            {\r\n                \"id\": 99,\r\n                \"temp_id\": null,\r\n                \"title\": \"添加测试\",\r\n                \"content\": \"今天去吃莲藕排骨汤吧，虽然也不好吃，但这里真的没什么东西可以吃了\",\r\n                \"time\": \"2019-03-18\",\r\n                \"replays\": [\r\n                    {\r\n                        \"messageId\": 16,\r\n                        \"replayId\": 8,\r\n                        \"replay\": \"那条街确实没什么东西可以吃了。。。\",\r\n                        \"replayTime\": \"2019-03-19\"\r\n                    }\r\n                ]\r\n            }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/message",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"message"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "回复模块",
+			"item": [
+				{
+					"name": "根据id查询回复",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// 解析响应体\r",
+									"const response = pm.response.json();\r",
+									"\r",
+									"// 1. 断言code为200\r",
+									"pm.test(\"响应状态码为200\", function () {\r",
+									"    pm.expect(response.code).to.eql(200);\r",
+									"});\r",
+									"\r",
+									"// 2. 断言data是数组\r",
+									"pm.test(\"data为数组类型\", function () {\r",
+									"    pm.expect(response.data).to.be.an(\"array\");\r",
+									"});\r",
+									"\r",
+									"// 3. 断言数组中每个元素的关键字不为空\r",
+									"pm.test(\"data数组元素关键字不为空\", function () {\r",
+									"    // 检查数组不为空\r",
+									"    pm.expect(response.data).not.to.be.empty;\r",
+									"    \r",
+									"    // 定义需要验证的关键字段\r",
+									"    const requiredFields = [\"messageId\", \"replayId\", \"replay\", \"replayTime\"];\r",
+									"    \r",
+									"    // 遍历数组中每个元素验证字段\r",
+									"    response.data.forEach((item, index) => {\r",
+									"        requiredFields.forEach(field => {\r",
+									"            pm.expect(item[field]).to.exist.and.not.be.null, \r",
+									"            `第${index+1}个元素的${field}为空或不存在`;\r",
+									"            \r",
+									"            // 对字符串类型字段验证非空字符串\r",
+									"            if (typeof item[field] === \"string\") {\r",
+									"                pm.expect(item[field].trim()).not.to.be.empty,\r",
+									"                `第${index+1}个元素的${field}为空字符串`;\r",
+									"            }\r",
+									"        });\r",
+									"    });\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/replay/26",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"replay",
+								"26"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "添加回复",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// 解析响应体\r",
+									"const response = pm.response.json();\r",
+									"\r",
+									"// 1. 断言code为200\r",
+									"pm.test(\"响应状态码为200\", function () {\r",
+									"    pm.expect(response.code).to.eql(200);\r",
+									"});\r",
+									"\r",
+									"// 2. 断言message为\"添加成功！\"\r",
+									"pm.test(\"响应消息为添加成功！\", function () {\r",
+									"    pm.expect(response.message).to.eql(\"添加成功！\");\r",
+									"});\r",
+									"\r",
+									"// 3. 断言data为1\r",
+									"pm.test(\"data值为1\", function () {\r",
+									"    pm.expect(response.data).to.eql(1);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "        {\r\n            \"messageId\": 99,\r\n            \"replayId\": 3,\r\n            \"replay\": \"添加回复测试\",\r\n            \"replayTime\": \"2019-03-18\"\r\n        }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/replay",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"replay"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

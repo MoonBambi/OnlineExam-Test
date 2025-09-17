@@ -1,0 +1,220 @@
+{
+	"info": {
+		"_postman_id": "3b1a2751-f324-4580-a58b-b68fc16d4765",
+		"name": "分数模块",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "46720833",
+		"_collection_link": "https://bambi-4084554.postman.co/workspace/Bambi's-Workspace~b4af6a6a-9375-4e60-8efa-291c8be1e1aa/collection/46720833-3b1a2751-f324-4580-a58b-b68fc16d4765?action=share&source=collection_link&creator=46720833"
+	},
+	"item": [
+		{
+			"name": "试卷代码查询分数",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/scores/20190001",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"scores",
+						"20190001"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "查询所有分数",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/scores",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"scores"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "分页查询分数",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/score/1/10/20154084",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"score",
+						"1",
+						"10",
+						"20154084"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "不分页查询分数",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/score/20154084",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"score",
+						"20154084"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "添加分数",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"examCode\":20190001,\r\n    \"studentId\":20154084,\r\n    \"subject\":\"计算机网络\",\r\n    \"etScore\":100\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/score",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"score"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "添加错误分数",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 404\", function () {\r",
+							"    pm.response.to.have.status(404);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"examCode\":20190001,\r\n    \"studentId\":20154084,\r\n    \"subject\":\"计算机网络\",\r\n    \"etScore\":200\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/score",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"score"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

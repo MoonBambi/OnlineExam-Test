@@ -1,0 +1,435 @@
+{
+	"info": {
+		"_postman_id": "643e0898-e376-4bb5-bcc3-7cbd15ff1da7",
+		"name": "试题管理模块",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "46720833",
+		"_collection_link": "https://bambi-4084554.postman.co/workspace/Bambi's-Workspace~b4af6a6a-9375-4e60-8efa-291c8be1e1aa/collection/46720833-643e0898-e376-4bb5-bcc3-7cbd15ff1da7?action=share&source=collection_link&creator=46720833"
+	},
+	"item": [
+		{
+			"name": "分页查询题库",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const response = pm.response.json();\r",
+							"\r",
+							"// 1. 基础断言：请求成功\r",
+							"pm.test(\"请求成功\", () => {\r",
+							"    pm.expect(response.code).to.eql(200);\r",
+							"    pm.expect(response.message).to.eql(\"查询所有题库\");\r",
+							"});\r",
+							"\r",
+							"\r",
+							"// 2. 题目记录字段断言（检查records元素中的字段）\r",
+							"pm.test(\"题目记录格式正确\", () => {\r",
+							"    const records = response.data.records;\r",
+							"    pm.expect(records).to.be.an(\"array\"); // 确认是数组\r",
+							"    \r",
+							"    if (records.length > 0) {\r",
+							"        const first = records[0];\r",
+							"        // 严格匹配响应中实际存在的字段（注意拼写：subject 是正确的）\r",
+							"        pm.expect(first).to.have.keys(\r",
+							"            \"question\", \r",
+							"            \"subject\",  \r",
+							"            \"score\", \r",
+							"            \"section\",  \r",
+							"            \"level\", \r",
+							"            \"type\"\r",
+							"        );\r",
+							"    }\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/answers/8/10",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"answers",
+						"8",
+						"10"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "不分页查询所有试卷",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const res = pm.response.json();\r",
+							"\r",
+							"// 断言成功状态 + 数据是数组\r",
+							"pm.test(\"查询所有试卷成功\", () => {\r",
+							"    pm.expect(res.code).to.eql(200);\r",
+							"    pm.expect(res.data).to.be.an(\"array\"); // 试卷列表是数组\r",
+							"  \r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/exams",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"exams"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "添加试卷基本信息",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// 解析响应体\r",
+							"const response = pm.response.json();\r",
+							"\r",
+							"// 1. 断言code为200\r",
+							"pm.test(\"响应状态码为200\", function () {\r",
+							"    pm.expect(response.code).to.eql(200);\r",
+							"});\r",
+							"\r",
+							"// 2. 断言message为\"添加成功\"\r",
+							"pm.test(\"响应消息为添加成功\", function () {\r",
+							"    pm.expect(response.message).to.eql(\"添加成功\");\r",
+							"});\r",
+							"\r",
+							"// 3. 断言data为1\r",
+							"pm.test(\"data值为1\", function () {\r",
+							"    pm.expect(response.data).to.eql(1);\r",
+							"});\r",
+							"    \r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "     {\r\n            \"description\": \"添加试卷测试\",\r\n            \"source\": \"测试1\",\r\n            \"paperId\": 1009,\r\n            \"examDate\": \"2019-04-24\",\r\n            \"totalTime\": 120,\r\n            \"grade\": \"2017\",\r\n            \"term\": null,\r\n            \"major\": \"测试1\",\r\n            \"institute\": \"测试1\",\r\n            \"totalScore\": 100,\r\n            \"type\": \"期末考试\",\r\n            \"tips\": \"请不要带与考试无关的书籍。\"\r\n        }\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/exam",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"exam"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "分页查询试卷",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const res = pm.response.json();\r",
+							"\r",
+							"// 从URL路径中提取page和size参数（兼容所有版本）\r",
+							"const pathParts = pm.request.url.getPath().split('/');\r",
+							"const page = pathParts[2];\r",
+							"const size = pathParts[3];\r",
+							"\r",
+							"pm.test(\"分页查询成功\", () => {\r",
+							"    // 1. 验证基础响应正确\r",
+							"    pm.expect(res.code).to.eql(200);\r",
+							"    \r",
+							"    const data = res.data;\r",
+							"    // 2. 验证分页核心字段存在（只关注必要字段，不限制额外字段）\r",
+							"    pm.expect(data).to.have.property(\"records\"); // 确保有records字段\r",
+							"    pm.expect(data).to.have.property(\"total\");   // 确保有total字段\r",
+							"    pm.expect(data).to.have.property(\"current\"); // 确保有current字段\r",
+							"    pm.expect(data).to.have.property(\"size\");    // 确保有size字段\r",
+							"    \r",
+							"    // 3. 验证数据类型正确\r",
+							"    pm.expect(data.records).to.be.an(\"array\"); // records是数组\r",
+							"    pm.expect(data.current).to.eql(parseInt(page)); // 页码匹配\r",
+							"    pm.expect(data.size).to.eql(parseInt(size));   // 每页条数匹配\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/exams/1/3",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"exams",
+						"1",
+						"3"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "查询指定试卷",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const res = pm.response.json();\r",
+							"\r",
+							"// 断言存在code字段且值为200\r",
+							"pm.test(\"响应包含code字段且为200\", () => {\r",
+							"    pm.expect(res).to.have.property(\"code\");\r",
+							"    pm.expect(res.code).to.eql(200);\r",
+							"});\r",
+							"\r",
+							"// 断言data包含指定关键字段\r",
+							"pm.test(\"data包含examCode、description、source字段\", () => {\r",
+							"    const data = res.data;\r",
+							"    pm.expect(data).to.be.an(\"object\"); // 确保data是对象\r",
+							"    pm.expect(data).to.have.property(\"examCode\");\r",
+							"    pm.expect(data).to.have.property(\"description\");\r",
+							"    pm.expect(data).to.have.property(\"source\");\r",
+							"});\r",
+							"    "
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/exam/20190002",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"exam",
+						"20190002"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "删除试卷",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"// 极简版：直接使用一个你确定存在的 examCode（替换成实际有效的 ID）\r",
+							"const fixedExamCode = 20190018; \r",
+							"pm.environment.set(\"tempExamCode\", fixedExamCode);\r",
+							"console.log(\"已手动设置 tempExamCode =\", fixedExamCode);"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const res = pm.response.json();\r",
+							"const tempExamCode = pm.environment.get(\"tempExamCode\");\r",
+							"\r",
+							"\r",
+							"\r",
+							"// 确认试卷已被彻底删除\r",
+							"pm.sendRequest({\r",
+							"    url: `${pm.environment.get(\"baseUrl\")}/exam/${tempExamCode}`,\r",
+							"    method: \"GET\"\r",
+							"}, (err, checkRes) => {\r",
+							"    pm.test(\"删除后试卷不存在\", () => {\r",
+							"        pm.expect(checkRes.json().code).to.eql(10000); // 不存在的状态码\r",
+							"    });\r",
+							"    // 清除环境变量，避免残留\r",
+							"    pm.environment.unset(\"tempExamCode\");\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/exam/{{tempExamCode}}",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"exam",
+						"{{tempExamCode}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "更新试卷",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const res = pm.response.json();\r",
+							"\r",
+							"pm.test(\"响应包含code、message和data三个字段且值正确\", () => {\r",
+							"    // 断言存在code字段且值为200\r",
+							"    pm.expect(res).to.have.property(\"code\");\r",
+							"    pm.expect(res.code).to.eql(200);\r",
+							"    \r",
+							"    // 断言存在message字段且值为\"更新成功\"\r",
+							"    pm.expect(res).to.have.property(\"message\");\r",
+							"    pm.expect(res.message).to.eql(\"更新成功\");\r",
+							"    \r",
+							"    // 断言存在data字段且值为1\r",
+							"    pm.expect(res).to.have.property(\"data\");\r",
+							"    pm.expect(res.data).to.eql(1);\r",
+							"});\r",
+							"    "
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "     {\r\n            \"examCode\": 20190013,\r\n            \"description\": \"测试1\",\r\n            \"source\": \"测试1\",\r\n            \"paperId\": 1009,\r\n            \"examDate\": \"2019-04-24\",\r\n            \"totalTime\": 120,\r\n            \"grade\": \"2017\",\r\n            \"term\": null,\r\n            \"major\": \"测试1\",\r\n            \"institute\": \"测试1\",\r\n            \"totalScore\": 100,\r\n            \"type\": \"期末考试\",\r\n            \"tips\": \"请不要带与考试无关的书籍。\"\r\n        }\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/exam",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"exam"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "试卷组题",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// 解析响应体\r",
+							"var response = pm.response.json();\r",
+							"\r",
+							"// 1. 断言响应状态码为200\r",
+							"pm.test(\"响应状态码为200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"// 2. 断言响应消息为\"试卷组卷成功\"\r",
+							"pm.test(\"响应消息正确\", function () {\r",
+							"    pm.expect(response.message).to.eql(\"试卷组卷成功\");\r",
+							"});\r",
+							"\r",
+							"// 3. 断言data字段为null（根据接口设计）\r",
+							"pm.test(\"data字段为null\", function () {\r",
+							"    pm.expect(response.data).to.be.null;\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"subject\": \"计算机网络\",\r\n  \"changeNumber\": 5,\r\n  \"fillNumber\": 3,\r\n  \"judgeNumber\": 2,\r\n  \"paperId\": 1021\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/item",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"item"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

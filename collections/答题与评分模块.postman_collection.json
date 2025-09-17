@@ -1,0 +1,767 @@
+{
+	"info": {
+		"_postman_id": "b7089e32-bb54-4702-849d-c4ee33150381",
+		"name": "答题与评分模块",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "46720833",
+		"_collection_link": "https://bambi-4084554.postman.co/workspace/Bambi's-Workspace~b4af6a6a-9375-4e60-8efa-291c8be1e1aa/collection/46720833-b7089e32-bb54-4702-849d-c4ee33150381?action=share&source=collection_link&creator=46720833"
+	},
+	"item": [
+		{
+			"name": "填空题",
+			"item": [
+				{
+					"name": "添加填空题",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// 解析响应数据\r",
+									"const res = pm.response.json();\r",
+									"\r",
+									"// 1. 验证状态码为200（成功）\r",
+									"pm.test(\"状态码应为200\", () => {\r",
+									"  pm.expect(pm.response.code).to.equal(200);\r",
+									"});\r",
+									"\r",
+									"// 2. 验证data为1（表示添加成功1条记录）\r",
+									"pm.test(\"添加成功时data应等于1\", () => {\r",
+									"  pm.expect(res.data).to.equal(1);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "",
+								"value": "",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"questionId\": 10030,\r\n    \"subject\": \"计算机网络\",\r\n    \"question\": \"怎么购买计算机\",\r\n    \"answer\": \"从网上购买\",\r\n    \"score\": 2,\r\n    \"level\": 3,\r\n    \"section\": null,\r\n    \"analysis\": null\r\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/fillQuestion",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"fillQuestion"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "添加已存在的填空题",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// 解析响应数据\r",
+									"const res = pm.response.json();\r",
+									"\r",
+									"// 验证状态码和data\r",
+									"pm.test(\"添加重复内容应返回400和data=0\", () => {\r",
+									"  pm.expect(pm.response.code).to.equal(400);  // 状态码应为400\r",
+									"  pm.expect(res.data).to.equal(0);            // data应为0（未添加成功）\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "",
+								"value": "",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"questionId\": 10030,\r\n    \"subject\": \"计算机网络\",\r\n    \"question\": \"怎么购买计算机\",\r\n    \"answer\": \"从网上购买\",\r\n    \"score\": 2,\r\n    \"level\": 3,\r\n    \"section\": null,\r\n    \"analysis\": null\r\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/fillQuestion",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"fillQuestion"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "查询存在的填空题",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// 定义预期的关键字段值\r",
+									"const expected = {\r",
+									"    questionId: 10000,\r",
+									"    subject: \"计算机网络\",\r",
+									"    question: \"从计算机网络系统组成的角度看，计算机网络可以分为()和()\",\r",
+									"    answer: \"通信子网资源子网\",\r",
+									"    score: 2,\r",
+									"    level: 3\r",
+									"};\r",
+									"\r",
+									"// 解析响应数据\r",
+									"const res = pm.response.json();\r",
+									"const data = res.data;\r",
+									"\r",
+									"// 验证状态码\r",
+									"pm.test(\"状态码应为200\", () => {\r",
+									"    pm.expect(pm.response.code).to.equal(200);\r",
+									"});\r",
+									"\r",
+									"// 验证关键字段\r",
+									"pm.test(\"questionId应匹配\", () => {\r",
+									"    pm.expect(data.questionId).to.equal(expected.questionId);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"subject应匹配\", () => {\r",
+									"    pm.expect(data.subject).to.equal(expected.subject);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"question内容应匹配\", () => {\r",
+									"    pm.expect(data.question).to.equal(expected.question);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"answer应匹配\", () => {\r",
+									"    pm.expect(data.answer).to.equal(expected.answer);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"score应匹配\", () => {\r",
+									"    pm.expect(data.score).to.equal(expected.score);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"level应匹配\", () => {\r",
+									"    pm.expect(data.level).to.equal(expected.level);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "",
+								"value": "",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"questionId\": 10000,\r\n    \"subject\": \"计算机网络\",\r\n    \"question\": \"从计算机网络系统组成的角度看，计算机网络可以分为()和()\",\r\n    \"answer\": \"通信子网资源子网\",\r\n    \"score\": 2,\r\n    \"level\": 3,\r\n    \"section\": null,\r\n    \"analysis\": null\r\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/fillQuestionId",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"fillQuestionId"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "查询不存在的填空题",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// 验证状态码为404\r",
+									"pm.test(\"状态码应为404\", () => {\r",
+									"  pm.response.to.have.status(404);\r",
+									"});\r",
+									"\r",
+									"// 验证消息提示正确\r",
+									"pm.test(\"消息应为'题目不存在'\", () => {\r",
+									"  const jsonData = pm.response.json();\r",
+									"  pm.expect(jsonData.message).to.eql(\"题目不存在\");\r",
+									"});\r",
+									"\r",
+									"// 验证data为null\r",
+									"pm.test(\"data应为null\", () => {\r",
+									"  const jsonData = pm.response.json();\r",
+									"  pm.expect(jsonData.data).to.be.null;\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "",
+								"value": "",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"questionId\": 90000,\r\n    \"subject\": \"计算机网络\",\r\n    \"question\": \"从计算机网络系统组成的角度看，计算机网络可以分为()和()\",\r\n    \"answer\": \"通信子网资源子网\",\r\n    \"score\": 2,\r\n    \"level\": 3,\r\n    \"section\": null,\r\n    \"analysis\": null\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/fillQuestionId",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"fillQuestionId"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "选择题",
+			"item": [
+				{
+					"name": "添加选择题",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// 解析响应数据\r",
+									"const res = pm.response.json();\r",
+									"\r",
+									"// 1. 验证状态码为200（成功）\r",
+									"pm.test(\"状态码应为200\", () => {\r",
+									"  pm.expect(pm.response.code).to.equal(200);\r",
+									"});\r",
+									"\r",
+									"// 2. 验证data为1（表示添加成功1条记录）\r",
+									"pm.test(\"添加成功时data应等于1\", () => {\r",
+									"  pm.expect(res.data).to.equal(1);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "",
+								"value": "",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"questionId\": 10030,\r\n    \"subject\": \"计算机网络\",\r\n    \"question\": \"怎么购买计算机\",\r\n    \"answer\": \"从网上购买\",\r\n    \"score\": 2,\r\n    \"level\": 3,\r\n    \"section\": null,\r\n    \"analysis\": null\r\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/MultiQuestion",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"MultiQuestion"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "添加已存在的选择题",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// 解析响应数据\r",
+									"const res = pm.response.json();\r",
+									"\r",
+									"// 验证状态码和data\r",
+									"pm.test(\"添加重复内容应返回400和data=0\", () => {\r",
+									"  pm.expect(pm.response.code).to.equal(400);  // 状态码应为400\r",
+									"  pm.expect(res.data).to.equal(0);            // data应为0（未添加成功）\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"questionId\":\"10000\",\r\n    \"subject\":\"计算机网络\",\r\n    \"question\":\"DNS 服务器和DHCP服务器的作用是（）\",\r\n    \"answerA\":\"将IP地址翻译为计算机名，为客户机分配IP地址\",\r\n    \"answerB\":\"将IP地址翻译为计算机名、解析计算机的MAC地址\",\r\n    \"answerC\":\"将计算机名翻译为IP地址、为客户机分配IP地址\",\r\n    \"answerD\":\"将计算机名翻译为IP地址、解析计算机的MAC地址\",\r\n    \"rightAnswer\":\"C\",\r\n    \"score\":\"2\",\r\n    \"section\":\"应用层\",\r\n    \"level\":\"2\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/MultiQuestion",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"MultiQuestion"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "查询存在的选择题",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// 定义预期的关键信息\r",
+									"const expected = {\r",
+									"    questionId: 10000,\r",
+									"    subject: \"计算机网络\",\r",
+									"    question: \"DNS 服务器和DHCP服务器的作用是（）\",\r",
+									"    answerA: \"将IP地址翻译为计算机名，为客户机分配IP地址\",\r",
+									"    answerB: \"将IP地址翻译为计算机名、解析计算机的MAC地址\",\r",
+									"    answerC: \"将计算机名翻译为IP地址、为客户机分配IP地址\",\r",
+									"    answerD: \"将计算机名翻译为IP地址、解析计算机的MAC地址\",\r",
+									"    rightAnswer: \"C\"\r",
+									"};\r",
+									"\r",
+									"// 解析响应数据\r",
+									"const res = pm.response.json();\r",
+									"const data = res.data;\r",
+									"\r",
+									"// 基础验证：状态码\r",
+									"pm.test(\"状态码应为200\", () => {\r",
+									"    pm.expect(pm.response.code).to.equal(200);\r",
+									"});\r",
+									"\r",
+									"// 验证核心字段\r",
+									"pm.test(\"questionId应匹配\", () => {\r",
+									"    pm.expect(data.questionId).to.equal(expected.questionId);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"subject应匹配\", () => {\r",
+									"    pm.expect(data.subject).to.equal(expected.subject);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"题干内容应匹配\", () => {\r",
+									"    pm.expect(data.question).to.equal(expected.question);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"选项A应匹配\", () => {\r",
+									"    pm.expect(data.answerA).to.equal(expected.answerA);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"选项B应匹配\", () => {\r",
+									"    pm.expect(data.answerB).to.equal(expected.answerB);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"选项C应匹配\", () => {\r",
+									"    pm.expect(data.answerC).to.equal(expected.answerC);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"选项D应匹配\", () => {\r",
+									"    pm.expect(data.answerD).to.equal(expected.answerD);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"正确答案应匹配\", () => {\r",
+									"    pm.expect(data.rightAnswer).to.equal(expected.rightAnswer);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"questionId\":10000,\r\n    \"subject\":\"计算机网络\",\r\n    \"question\":\"DNS 服务器和DHCP服务器的作用是（）\",\r\n    \"answerA\":\"将IP地址翻译为计算机名，为客户机分配IP地址\",\r\n    \"answerB\":\"将IP地址翻译为计算机名、解析计算机的MAC地址\",\r\n    \"answerC\":\"将计算机名翻译为IP地址、为客户机分配IP地址\",\r\n    \"answerD\":\"将计算机名翻译为IP地址、解析计算机的MAC地址\",\r\n    \"rightAnswer\":\"C\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/multiQuestionId",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"multiQuestionId"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "查询不存在的选择题",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// 验证状态码为404\r",
+									"pm.test(\"状态码应为404\", () => {\r",
+									"  pm.response.to.have.status(404);\r",
+									"});\r",
+									"\r",
+									"// 验证消息提示正确\r",
+									"pm.test(\"消息应为'题目不存在'\", () => {\r",
+									"  const jsonData = pm.response.json();\r",
+									"  pm.expect(jsonData.message).to.eql(\"题目不存在\");\r",
+									"});\r",
+									"\r",
+									"// 验证data为null\r",
+									"pm.test(\"data应为null\", () => {\r",
+									"  const jsonData = pm.response.json();\r",
+									"  pm.expect(jsonData.data).to.be.null;\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"questionId\":90000,\r\n    \"subject\":\"计算机网络\",\r\n    \"question\":\"DNS 服务器和DHCP服务器的作用是（）\",\r\n    \"answerA\":\"将IP地址翻译为计算机名，为客户机分配IP地址\",\r\n    \"answerB\":\"将IP地址翻译为计算机名、解析计算机的MAC地址\",\r\n    \"answerC\":\"将计算机名翻译为IP地址、为客户机分配IP地址\",\r\n    \"answerD\":\"将计算机名翻译为IP地址、解析计算机的MAC地址\",\r\n    \"rightAnswer\":\"C\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/multiQuestionId",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"multiQuestionId"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "判断题",
+			"item": [
+				{
+					"name": "添加判断题",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// 解析响应数据\r",
+									"const res = pm.response.json();\r",
+									"\r",
+									"// 1. 验证状态码为200（成功）\r",
+									"pm.test(\"状态码应为200\", () => {\r",
+									"  pm.expect(pm.response.code).to.equal(200);\r",
+									"});\r",
+									"\r",
+									"// 2. 验证data为1（表示添加成功1条记录）\r",
+									"pm.test(\"添加成功时data应等于1\", () => {\r",
+									"  pm.expect(res.data).to.equal(1);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"questionId\":\"10050\",\r\n    \"subject\":\"计算机网络\",\r\n    \"question\":\"牛儿很爱吃草\",\r\n    \"answer\":\"T\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/judgeQuestion",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"judgeQuestion"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "添加已存在的判断题",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// 解析响应数据\r",
+									"const res = pm.response.json();\r",
+									"\r",
+									"// 验证状态码和data\r",
+									"pm.test(\"添加重复内容应返回400和data=0\", () => {\r",
+									"  pm.expect(pm.response.code).to.equal(400);  // 状态码应为400\r",
+									"  pm.expect(res.data).to.equal(0);            // data应为0（未添加成功）\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"questionId\":\"10001\",\r\n    \"subject\":\"计算机网络\",\r\n    \"question\":\" 与有线网相比,无线网的数据传输率一般相对较慢\",\r\n    \"answer\":\"T\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/judgeQuestion",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"judgeQuestion"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "查询已存在判断题",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// 定义预期的关键信息\r",
+									"const expected = {\r",
+									"    questionId: \"10001\",\r",
+									"    subject: \"计算机网络\",\r",
+									"    question: \" 与有线网相比,无线网的数据传输率一般相对较慢\",\r",
+									"    answer: \"T\"\r",
+									"};\r",
+									"\r",
+									"// 解析响应数据\r",
+									"const res = pm.response.json();\r",
+									"const data = res.data;\r",
+									"\r",
+									"// 基础验证：状态码\r",
+									"pm.test(\"状态码应为200\", () => {\r",
+									"    pm.expect(pm.response.code).to.equal(200);\r",
+									"});\r",
+									"\r",
+									"// 验证核心字段\r",
+									"pm.test(\"questionId应匹配\", () => {\r",
+									"    // 注意类型转换，实际返回可能是数字类型\r",
+									"    pm.expect(data.questionId.toString()).to.equal(expected.questionId);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"subject应匹配\", () => {\r",
+									"    pm.expect(data.subject).to.equal(expected.subject);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"题干内容应匹配\", () => {\r",
+									"    pm.expect(data.question).to.equal(expected.question);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"答案应匹配\", () => {\r",
+									"    pm.expect(data.answer).to.equal(expected.answer);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"questionId\":\"10001\",\r\n    \"subject\":\"计算机网络\",\r\n    \"question\":\" 与有线网相比,无线网的数据传输率一般相对较慢\",\r\n    \"answer\":\"T\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}//judgeQuestionId",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"",
+								"judgeQuestionId"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "查询不存在的判断题",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// 验证状态码为404\r",
+									"pm.test(\"状态码应为404\", () => {\r",
+									"  pm.response.to.have.status(404);\r",
+									"});\r",
+									"\r",
+									"// 验证消息提示正确\r",
+									"pm.test(\"消息应为'题目不存在'\", () => {\r",
+									"  const jsonData = pm.response.json();\r",
+									"  pm.expect(jsonData.message).to.eql(\"题目不存在\");\r",
+									"});\r",
+									"\r",
+									"// 验证data为null\r",
+									"pm.test(\"data应为null\", () => {\r",
+									"  const jsonData = pm.response.json();\r",
+									"  pm.expect(jsonData.data).to.be.null;\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"questionId\":\"90001\",\r\n    \"subject\":\"计算机网络\",\r\n    \"question\":\" 不存在的题目\",\r\n    \"answer\":\"F\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/judgeQuestionId",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"judgeQuestionId"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

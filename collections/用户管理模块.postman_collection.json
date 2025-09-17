@@ -1,0 +1,1354 @@
+{
+	"info": {
+		"_postman_id": "a76a3609-42be-43de-ab0f-2180f0297884",
+		"name": "用户管理模块",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "46720833",
+		"_collection_link": "https://bambi-4084554.postman.co/workspace/Bambi's-Workspace~b4af6a6a-9375-4e60-8efa-291c8be1e1aa/collection/46720833-a76a3609-42be-43de-ab0f-2180f0297884?action=share&source=collection_link&creator=46720833"
+	},
+	"item": [
+		{
+			"name": "学生管理模块",
+			"item": [
+				{
+					"name": "分页查询学生列表",
+					"item": [
+						{
+							"name": "查询第一页学生信息",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"状态码应为 200\", () => {\r",
+											"  pm.response.to.have.status(200);\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"username\": 9527,\r\n  \"password\": \"123456\"  // 错误密码\r\n}"
+								},
+								"url": {
+									"raw": "{{baseUrl}}/students/1/10?page=1&size=10",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"students",
+										"1",
+										"10"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "1"
+										},
+										{
+											"key": "size",
+											"value": "10"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "查询不存在的页",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"状态码应为 404\", () => {\r",
+											"  pm.response.to.have.status(404);\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/students/999/10?page=999&size=10",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"students",
+										"999",
+										"10"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "999"
+										},
+										{
+											"key": "size",
+											"value": "10"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "根据ID查询学生",
+					"item": [
+						{
+							"name": "查询指定学生信息",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"状态码应为 200\", () => {\r",
+											"  pm.response.to.have.status(200);\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/student/20154001?studentId=20154001",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"student",
+										"20154001"
+									],
+									"query": [
+										{
+											"key": "studentId",
+											"value": "20154001"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "查询不存在的学生",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"状态码应为：404\",()=>{\r",
+											"    pm.response.to.have.status(404)\r",
+											"})"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/student/2015400?studentId=2015400",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"student",
+										"2015400"
+									],
+									"query": [
+										{
+											"key": "studentId",
+											"value": "2015400"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "根据ID删除学生",
+					"item": [
+						{
+							"name": "删除存在学生",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/student/20154001?studentid=20154001",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"student",
+										"20154001"
+									],
+									"query": [
+										{
+											"key": "studentid",
+											"value": "20154001"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "删除不存在的学生",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/student/1?studentid=1",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"student",
+										"1"
+									],
+									"query": [
+										{
+											"key": "studentid",
+											"value": "1"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "修改学生密码",
+					"item": [
+						{
+							"name": "修改学生存在密码",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"studentId\": 20154084,\r\n    \"password\": \"123456\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/studentPWD",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"studentPWD"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "修改不存在学生的密码",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"// 解析响应体\r",
+											"const response = pm.response.json();\r",
+											"\r",
+											"// 1. 验证响应状态码（假设修改不存在的学生密码应返回404）\r",
+											"pm.test(\"修改不存在的学生密码应返回404\", () => {\r",
+											"    pm.response.to.have.status(404);\r",
+											"});\r",
+											"\r",
+											"// 2. 验证响应体中的code字段\r",
+											"pm.test(\"响应code应为404\", () => {\r",
+											"    pm.expect(response.code).to.eql(404);\r",
+											"});\r",
+											"\r",
+											"// 3. 验证响应消息是否包含\"学生不存在\"\r",
+											"pm.test(\"响应消息应包含'学生不存在'\", () => {\r",
+											"    pm.expect(response.message).to.include(\"学生不存在\");\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"studentId\": 1,\r\n    \"password\": \"123456\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/studentPWD",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"studentPWD"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "修改学生信息",
+					"item": [
+						{
+							"name": "更新存在学生信息",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"studentId\": 20154084,\r\n    \"name\": \"张大宝\",\r\n    \"major\": \"网络工程\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/student",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"student"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "更新不存在学生信息",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"studentId\": 123,\r\n    \"name\": \"二狗\",\r\n    \"major\": \"网络工程\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/student",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"student"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "添加新学生信息",
+					"item": [
+						{
+							"name": "添加合法学生信息",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"studentId\": 20230001,\r\n    \"name\": \"李四\",\r\n    \"password\": \"123456\",\r\n    \"class\": \"1\"\r\n \r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/student",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"student"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "添加已存在学生信息",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"// 解析响应体\r",
+											"const response = pm.response.json();\r",
+											"\r",
+											"// 1. 验证响应状态码\r",
+											"pm.test(\"添加存在的学生信息应返回404\", () => {\r",
+											"    pm.response.to.have.status(404);\r",
+											"});\r",
+											"\r",
+											"// 2. 验证响应体中的code字段\r",
+											"pm.test(\"响应code应为404\", () => {\r",
+											"    pm.expect(response.code).to.eql(404);\r",
+											"});\r",
+											"\r",
+											"// 3. 验证响应消息是否包含\"学生已存在\"\r",
+											"pm.test(\"响应消息应包含'学生已存在'\", () => {\r",
+											"    pm.expect(response.message).to.include(\"学生已存在\");\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"studentId\": 20230001,\r\n    \"name\": \"大咸鱼\",\r\n    \"password\": \"123456\",\r\n    \"class\": \"1\"\r\n \r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/student",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"student"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "教师管理模块",
+			"item": [
+				{
+					"name": "分页查询教师列表 Copy",
+					"item": [
+						{
+							"name": "查询第一页教师信息",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"状态码应为 200\", () => {\r",
+											"  pm.response.to.have.status(200);\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"username\": 9527,\r\n  \"password\": \"123456\"  // 错误密码\r\n}"
+								},
+								"url": {
+									"raw": "{{baseUrl}}/teachers/1/10?page=1&size=10",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"teachers",
+										"1",
+										"10"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "1"
+										},
+										{
+											"key": "size",
+											"value": "10"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "查询不存在的页",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"状态码应为 404\", () => {\r",
+											"  pm.response.to.have.status(404);\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/teachers/999/10?page=999&size=10",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"teachers",
+										"999",
+										"10"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "999"
+										},
+										{
+											"key": "size",
+											"value": "10"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "根据ID查询教师 Copy",
+					"item": [
+						{
+							"name": "查询指定教师信息",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"状态码应为 200\", () => {\r",
+											"  pm.response.to.have.status(200);\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/teacher/20081001?teacherId=20081001",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"teacher",
+										"20081001"
+									],
+									"query": [
+										{
+											"key": "teacherId",
+											"value": "20081001"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "查询不存在的教师",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"// 1. 解析响应体\r",
+											"const response = pm.response.json();\r",
+											"\r",
+											"// 2. 验证响应体中的code字段\r",
+											"pm.test(\"响应code应为404\", () => {\r",
+											"    pm.expect(response.code).to.eql(404);\r",
+											"});\r",
+											"\r",
+											"// 3. 验证响应消息是否包含\"教师不存在\"\r",
+											"pm.test(\"响应消息应包含'查询的用户不存在'\", () => {\r",
+											"    pm.expect(response.message).to.include(\"查询的用户不存在\");\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/teacher/2015400?teacherId=2015400",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"teacher",
+										"2015400"
+									],
+									"query": [
+										{
+											"key": "teacherId",
+											"value": "2015400"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "根据ID删除教师 Copy",
+					"item": [
+						{
+							"name": "删除存在教师",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/teacher/20081002",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"teacher",
+										"20081002"
+									],
+									"query": [
+										{
+											"key": "",
+											"value": "",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "删除不存在的教师",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"// 1. 解析响应体\r",
+											"const response = pm.response.json();\r",
+											"\r",
+											"\r",
+											"// 2. 验证响应体中的code字段\r",
+											"pm.test(\"响应code应为404\", () => {\r",
+											"    pm.expect(response.code).to.eql(404);\r",
+											"});\r",
+											"\r",
+											"// 3. 验证响应消息是否包含\"教师不存在\"\r",
+											"pm.test(\"响应消息应包含'教师不存在'\", () => {\r",
+											"    pm.expect(response.message).to.include(\"教师不存在\");\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/teacher/1",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"teacher",
+										"1"
+									],
+									"query": [
+										{
+											"key": "",
+											"value": "",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "修改教师信息 Copy",
+					"item": [
+						{
+							"name": "更新存在教师信息",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"teacherId\": 20081002,\r\n    \"name\": \"张二狗\"\r\n    \r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/teacher/20081002",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"teacher",
+										"20081002"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "更新不存在教师信息",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"// 1. 解析响应体\r",
+											"const response = pm.response.json();\r",
+											"\r",
+											"// 2. 验证响应体中的code字段\r",
+											"pm.test(\"响应code应为400\", () => {\r",
+											"    pm.expect(response.code).to.eql(400);\r",
+											"});\r",
+											"\r",
+											"// 3. 验证响应消息是否包含\"更新失败\"\r",
+											"pm.test(\"响应消息应包含'更新失败'\", () => {\r",
+											"    pm.expect(response.message).to.include(\"更新失败\");\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"teacherId\": 123,\r\n    \"name\": \"土狗\"\r\n    \r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/teacher",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"teacher"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "添加新教师信息 Copy",
+					"item": [
+						{
+							"name": "添加合法教师信息",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"teacherId\": 20081005,\r\n    \"name\": \"狗蛋\"\r\n \r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/teacher",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"teacher"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "添加已存在教师信息",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"// 1. 解析响应体\r",
+											"const response = pm.response.json();\r",
+											"\r",
+											"// 2. 验证响应体中的code字段\r",
+											"pm.test(\"响应code应为404\", () => {\r",
+											"    pm.expect(response.code).to.eql(404);\r",
+											"});\r",
+											"\r",
+											"// 3. 验证响应消息是否包含\"教师已存在\"\r",
+											"pm.test(\"响应消息应包含'教师已存在'\", () => {\r",
+											"    pm.expect(response.message).to.include(\"教师已存在\");\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"teacherId\": 20081001,\r\n    \"name\": \"张\"\r\n \r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/teacher",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"teacher"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "管理员模块",
+			"item": [
+				{
+					"name": "查询所有管理员",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// 解析响应体\r",
+									"const response = pm.response.json();\r",
+									"\r",
+									"// 1. 断言响应状态码为 200（成功）\r",
+									"pm.test(\"状态码为 200\", () => {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"// 2. 断言响应格式正确（包含 code、message、data 字段）\r",
+									"pm.test(\"响应格式正确\", () => {\r",
+									"    pm.expect(response).to.have.keys(\"code\", \"message\", \"data\");\r",
+									"    pm.expect(response.code).to.eql(200); // 业务码为 200（成功）\r",
+									"});\r",
+									"\r",
+									"// 3. 断言数据部分为数组（管理员列表）\r",
+									"pm.test(\"返回管理员列表\", () => {\r",
+									"    pm.expect(response.data).to.be.an(\"array\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/admins",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"admins"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "查询指定管理员",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// 解析响应体\r",
+									"const response = pm.response.json();\r",
+									"// 假设查询的管理员 ID 是 6666（根据实际测试的 ID 替换）\r",
+									"const expectedAdminId = 6666;\r",
+									"\r",
+									"// 1. 基础断言：状态码和业务码正确\r",
+									"pm.test(\"请求成功\", () => {\r",
+									"    pm.response.to.have.status(200); // HTTP 状态码\r",
+									"    pm.expect(response.code).to.eql(200); // 业务码\r",
+									"    pm.expect(response.message).to.eql(\"请求成功\"); // 提示信息\r",
+									"});\r",
+									"\r",
+									"// 2. 数据结构断言：data 包含预期字段\r",
+									"pm.test(\"管理员信息字段完整\", () => {\r",
+									"    const data = response.data;\r",
+									"    pm.expect(data).to.be.an(\"object\"); // data 是对象\r",
+									"    // 验证关键字段存在（根据业务需求选择，如姓名、电话等）\r",
+									"    pm.expect(data).to.have.keys(\"adminName\", \"tel\", \"role\");\r",
+									"});\r",
+									"\r",
+									"// 3. 核心业务断言：查询的管理员信息正确（以姓名为例，可替换其他字段）\r",
+									"pm.test(\"查询到指定管理员\", () => {\r",
+									"    pm.expect(response.data.adminName).to.eql(\"牛子管理员\"); // 验证姓名\r",
+									"    pm.expect(response.data.role).to.eql(\"0\"); // 验证角色（假设 0 是预期值）\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/admin/6666",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"admin",
+								"6666"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "删除指定管理员",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// 解析响应体\r",
+									"const response = pm.response.json();\r",
+									"\r",
+									"// 1. 断言 HTTP 状态码为 200（接口调用成功）\r",
+									"pm.test(\"删除请求成功\", () => {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"// 2. 断言业务码和提示信息正确（核心：验证删除成功）\r",
+									"pm.test(\"删除操作成功\", () => {\r",
+									"    pm.expect(response.code).to.eql(200); // 业务码为成功状态\r",
+									"    pm.expect(response.message).to.eql(\"请求成功\"); // 匹配预期提示信息\r",
+									"});\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/admin/8888",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"admin",
+								"8888"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "删除不存在的管理员",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const response = pm.response.json();\r",
+									"\r",
+									"// 1. 断言业务码为失败（如 404）\r",
+									"pm.test(\"删除不存在的管理员时返回失败码\", () => {\r",
+									"    pm.expect(response.code).to.eql(404); // 非 200 即可，具体按接口定义\r",
+									"});\r",
+									"\r",
+									"// 2. 断言提示信息正确\r",
+									"pm.test(\"提示信息为管理员不存在\", () => {\r",
+									"    pm.expect(response.message).to.include(\"不存在\"); // 包含“不存在”关键词\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/admin/9999",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"admin",
+								"9999"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "更新指定的管理员",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Postman 断言示例\r",
+									"pm.test(\"更新管理员时后端返回 200 错误\", () => {\r",
+									"    pm.response.to.have.status(200); // 明确断言当前响应码为 500\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"adminName\":\"小牛子\",\r\n    \"sex\":\"女\",\r\n    \"tel\":\"11111111111\",\r\n    \"email\":\"12345@qq.com\",\r\n    \"pwd\":\"123321\",\r\n    \"cardId\":\"1234\",\r\n    \"role\":\"0\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/admin/6666",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"admin",
+								"6666"
+							],
+							"query": [
+								{
+									"key": "adminName",
+									"value": "小牛子",
+									"disabled": true
+								},
+								{
+									"key": "tel",
+									"value": "11111111111",
+									"disabled": true
+								},
+								{
+									"key": "sex",
+									"value": "女",
+									"disabled": true
+								},
+								{
+									"key": "email",
+									"value": "12345@qq.com",
+									"disabled": true
+								},
+								{
+									"key": "pwd",
+									"value": "123321",
+									"disabled": true
+								},
+								{
+									"key": "cardId",
+									"value": "1234",
+									"disabled": true
+								},
+								{
+									"key": "role",
+									"value": "0",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "更新不存在的管理员",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Postman 断言示例\r",
+									"pm.test(\"更新管理员时后端返回 200 错误\", () => {\r",
+									"    pm.response.to.have.status(200); // 明确断言当前响应码为 500\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/admin/999",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"admin",
+								"999"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "添加管理员",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const response = pm.response.json();\r",
+									"\r",
+									"// 断言 code 应为 200（按接口返回格式）\r",
+									"pm.test(\"code 为 200\", () => {\r",
+									"    pm.expect(response.code).to.eql(200);\r",
+									"});\r",
+									"\r",
+									"// 断言 message 应为 \"请求成功\"（按接口返回格式）\r",
+									"pm.test(\"message 为 '请求成功'\", () => {\r",
+									"    pm.expect(response.message).to.eql(\"请求成功\");\r",
+									"});\r",
+									"\r",
+									"// 断言 data 应为 1（预期成功值），但实际为 0（结合数据库验证失败）\r",
+									"pm.test(\"data 应为 1（实际添加失败）\", () => {\r",
+									"    pm.expect(response.data).to.eql(1);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"adminName\":\"寒风\",\r\n    \"sex\":\"男\",\r\n    \"tel\":\"11111111112\",\r\n    \"email\":\"54321@qq.com\",\r\n    \"pwd\":\"123456\",\r\n    \"cardId\":\"1234\",\r\n    \"role\":\"0\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/admin",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"admin"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "添加已存在的管理员",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const response = pm.response.json();\r",
+									"\r",
+									"// 断言 code 应为失败状态（如 400/500 等，根据接口设计）\r",
+									"pm.test(\"code 应为失败状态\", () => {\r",
+									"    pm.expect(response.code).not.to.eql(200); // 不是成功的 200\r",
+									"});\r",
+									"\r",
+									"// 断言 message 包含“已存在”等失败提示\r",
+									"pm.test(\"message 提示管理员已存在\", () => {\r",
+									"    pm.expect(response.message).to.include(\"已存在\"); // 关键词匹配\r",
+									"});\r",
+									"\r",
+									"// 断言 data 应为失败标识（如 null 或 0，根据实际返回）\r",
+									"pm.test(\"data 表示添加失败\", () => {\r",
+									"    pm.expect(response.data).to.be.oneOf([null, 0]); // 符合失败时的 data 特征\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"adminName\":\"牛子管理员\",\r\n    \"sex\":\"男\",\r\n    \"tel\":\"13012345678\",\r\n    \"email\":\"123456789@qq.com\",\r\n    \"pwd\":\"123456\",\r\n    \"cardId\":\"4321\",\r\n    \"role\":\"0\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/admin",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"admin"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
