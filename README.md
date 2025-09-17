@@ -1,40 +1,53 @@
-# 在线考试系统
+# Postman API 自动化测试
 
-* ## 系统介绍
+ ## 1. 项目简介
 
-     该项目是一个前后端分离，后端使用 SpringBoot，前端使用 VUE 和 Element-UI 组件库配合完成开发。
+     所有测试用例均使用 Postman 进行设计和编写，并通过其命令行工具 Newman 来执行，以便于集成到CI/CD流程中。
 
-* ## 在线浏览地址
-    温馨提示：请登录后台的朋友,不要删除计算机网络这套试卷，因为目前只添加了这套试卷的题目作为测试，删了，其他人就不能答题了。
+ ## 2. 技术栈与工具
     
-    [在线考试系统](http://124.223.53.193/ "在线考试系统")
+     测试工具: Postman
+
+     运行环境: Node.js
+
+     命令行执行器: Newman
+
+     测试报告: newman-reporter-htmlextra
 
 
-* ## 页面截图
-  ![登录](https://github.com/YXJ2018/SpringBoot-Vue-OnlineExam/blob/master/img/%E7%99%BB%E5%BD%95.png?raw=true)
 
-  <center>登录</center>
+ ## 4. 如何运行
 
-![试卷列表](https://github.com/YXJ2018/SpringBoot-Vue-OnlineExam/blob/master/img/%E8%AF%95%E5%8D%B7%E5%88%97%E8%A1%A8.png?raw=true)
+### 4.1. 环境准备 (Prerequisites)
 
-<center>试卷列表</center>
 
-![答题模块](https://github.com/YXJ2018/SpringBoot-Vue-OnlineExam/blob/master/img/%E7%AD%94%E9%A2%98%E6%A8%A1%E5%9D%97.png?raw=true)
+1.  **安装 Node.js**:
 
-<center>答题模块</center>
+2.  **全局安装 Newman**:
+    打开命令行工具，执行以下命令：
+    ```bash
+    npm install -g newman
+    ```
 
-![练习模式](https://github.com/YXJ2018/SpringBoot-Vue-OnlineExam/blob/master/img/%E7%BB%83%E4%B9%A0%E6%A8%A1%E5%BC%8F.png?raw=true)
+3.  **全局安装 HTML报告生成器**:
+    安装 `htmlextra` 报告器。
+    ```bash
+    npm install -g newman-reporter-htmlextra
+    ```
 
-<center>练习模式</center>
+### 4.2. 执行测试 (Running the Tests)
 
-![留言模块](https://github.com/YXJ2018/SpringBoot-Vue-OnlineExam/blob/master/img/%E7%95%99%E8%A8%80%E6%A8%A1%E5%9D%97.png?raw=true)
+1.  执行以下命令来运行 `collections` 文件夹下的所有测试用例：
 
-<center>留言模块<center/>
+    ```bash
+    newman run "collections\*.postman_collection.json" -e "environments\考试系统测试环境.postman_environment.json" -r cli,htmlextra
+    ```
+    
+    **命令**:
+    * `run "collections\*.postman_collection.json"`: 运行 `collections` 文件夹下所有以 `.postman_collection.json` 结尾的文件。
+    * `-e "environments\..."`: 指定本次运行所使用的环境配置文件。
+    * `-r cli,htmlextra`: 指定使用两种报告器，`cli` 表示在命令行实时输出结果，`htmlextra` 表示在结束后生成HTML报告。
 
-![后台管理](https://github.com/YXJ2018/SpringBoot-Vue-OnlineExam/blob/master/img/%E5%90%8E%E5%8F%B0%E7%AE%A1%E7%90%86.png?raw=true)
+## 5. 查看报告
 
-<center>后台管理</center>
-
-![学生成绩](https://github.com/YXJ2018/SpringBoot-Vue-OnlineExam/blob/master/img/%E5%AD%A6%E7%94%9F%E6%88%90%E7%BB%A9%E6%8A%98%E7%BA%BF%E5%9B%BE.png?raw=true)
-
-<center>学生成绩</center>
+测试运行完毕后，项目根目录下会自动生成一个名为 `newman` 的文件夹。打开它，找到里面的 `.html` 文件并用浏览器打开，即可看到本次测试的详细报告。
